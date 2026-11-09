@@ -1,5 +1,7 @@
 # Disaster-Risk-Spatial-Architecture
 
+[![CI](https://github.com/Christiellen/disaster-risk-spatial-architecture/actions/workflows/ci.yml/badge.svg)](https://github.com/Christiellen/disaster-risk-spatial-architecture/actions/workflows/ci.yml)
+
 Arquitetura de dados geoespacial em **PostgreSQL + PostGIS** para registros de desastres no Brasil, construída sobre dados públicos da Defesa Civil Nacional (Atlas Digital de Desastres) e do IBGE.
 
 O projeto reproduz o trabalho de uma **Fase 0 de evolução de sistema legado**: inventariar as fontes, reconciliar o dado real com o que se espera dele, consolidar o baseline as-is/to-be, modelar em três níveis, garantir integridade, histórico e rastreabilidade no próprio banco, e publicar um contrato de integração estável para painéis e para um app mobile offline-first.
