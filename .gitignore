@@ -1,0 +1,7 @@
+.env
+.venv/
+__pycache__/
+*.pyc
+# Dados brutos baixados das fontes oficiais: não versionar (tamanho e licença de redistribuição)
+data/raw/*
+!data/raw/.gitkeep

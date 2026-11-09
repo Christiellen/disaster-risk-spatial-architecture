@@ -1,0 +1,23 @@
+Atlas Digital de Desastres no Brasil - AMOSTRA SINTÉTICA
+Gerado por scripts/gerar_amostra.py - não representa desastres reais
+Protocolo;UF;Cód. IBGE Mun;Nome Município;Data Evento;Data Registro;Cód. Cobrade;Descrição Tipologia;Status;DH_MORTOS;DH_FERIDOS;DH_ENFERMOS;DH_DESABRIGADOS;DH_DESALOJADOS;DH_DESAPARECIDOS;DH_OUTROS_AFETADOS;DM_Uni_Habita_Danificadas;DM_Uni_Habita_Destruidas;PEPL_Total_Publico;PEPR_Total_Privado;Setores Censitários
+SC-F-4205407-12100-20230115;SC;4205407;Florianópolis;15/01/2023;16/01/2023;12100;Inundações;Reconhecido;0;3;;40;120;0;800;35;2;1.250.000,00;3.400.000,00;"12;13"
+;SC;4205407;Florianópolis;02/03/2022;03/03/2022;1.3.2.1.4;Chuvas intensas;Reconhecido;;;;10;25;;;8;;;;
+SC-F-4216602-12100-20230115;SC;4216602;São José;2023-01-15;2023-01-17;12100;Inundações;Reconhecido;0;1;;15;60;;300;20;;500.000,00;900.000,00;
+SC-F-4211900-12200-20230117;SC;4211900;Palhoça;17/01/2023;18/01/2023;12200 - Enxurradas;Enxurradas;Em análise;1;4;;22;90;;;12;3;;;
+RS-F-4314902-12100-20240502;RS;4314902;Porto Alegre;02/05/2024;03/05/2024;12100;Inundações;Reconhecido;5;120;30;15.432;78.900;2;160.000;4.200;310;12.345.678,90;98.765.432,10;
+RS-F-4304606-12100-20240502;RS;4304606;Canoas;02/05/2024;04/05/2024;12100;Inundações;Reconhecido;3;40;;8.100;42.000;;;2.100;150;;;
+DF-F-5300108-14110-20240815;DF;530010;Brasília;15/08/2024;20/08/2024;14110;Estiagem;Reconhecido;;;;;;;250000;;;;;
+XX-F-9999999-12100-20230101;SC;9999999;Inexistente;01/01/2023;02/01/2023;12100;Inundações;Reconhecido;;;;;;;;;;;;
+RJ-F-2927408-13213-20230601;RJ;2927408;Salvador;01/06/2023;02/06/2023;13213;Granizo;Reconhecido;;;;;;;;;;;;
+SC-F-4205407-12000-20230201;SC;4205407;Florianópolis;01/02/2023;02/02/2023;12000;Hidrológico;Reconhecido;;;;;;;;;;;;
+RJ-F-3304557-22210-20230301;RJ;3304557;Rio de Janeiro;01/03/2023;02/03/2023;22210;Tecnológico;Reconhecido;;;;;;;;;;;;
+RJ-F-3304557-13215-20200231;RJ;3304557;Rio de Janeiro;31/02/2020;01/03/2020;13215;Vendaval;Reconhecido;;;;;;;;;;;;
+RJ-F-3304557-13215-20310101;RJ;3304557;Rio de Janeiro;01/01/2031;02/01/2031;13215;Vendaval;Reconhecido;;;;;;;;;;;;
+RS-F-4314902-13215-20230910;RS;4314902;Porto Alegre;10/09/2023;05/09/2023;13215;Vendaval;Reconhecido;;;;;;;;;;;;
+SC-F-4216602-12300-20230401;SC;4216602;São José;01/04/2023;02/04/2023;12300;Alagamentos;Reconhecido;;-5;;;;;;;;;;
+SC-F-4211900-12300-20230402;SC;4211900;Palhoça;02/04/2023;03/04/2023;12300;Alagamentos;Reconhecido;;;;2,5;;;;;;;;
+SC-F-4205407-12100-20230115;SC;4205407;Florianópolis;15/01/2023;16/01/2023;12100;Inundações;Reconhecido;0;3;;40;120;0;800;35;2;;;
+BA-F-2927408-13213-20240101;BA;2927408;Salvador;45292;45293;13213;Granizo;Reconhecido;;2;;;5;;;14;;;;
+rj-f-3304557-13215-20240120;RJ;3304557;Rio de Janeiro;20/01/2024;21/01/2024;13215;Vendaval;Reconhecido;0;0;0;0;0;0;0;0;0;0;0;
+;;;;05/05/2023;;12100;Inundações;;;;;;;;;;;;;

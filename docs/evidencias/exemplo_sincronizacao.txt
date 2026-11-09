@@ -1,0 +1,73 @@
+                             jsonb_pretty                             
+----------------------------------------------------------------------
+ {                                                                   +
+     "cursor": 2,                                                    +
+     "tem_mais": true,                                               +
+     "alteracoes": [                                                 +
+         {                                                           +
+             "id": "BA-F-2927408-13213-20240101",                    +
+             "operacao": "GRAVAR",                                   +
+             "registro": {                                           +
+                 "id": "BA-F-2927408-13213-20240101",                +
+                 "uf": "BA",                                         +
+                 "danos": {                                          +
+                     "DH_FERIDOS": 2.00,                             +
+                     "DH_DESALOJADOS": 5.00,                         +
+                     "DM_UH_DANIFICADAS": 14.00                      +
+                 },                                                  +
+                 "cd_mun": "2927408",                                +
+                 "versao": 1,                                        +
+                 "latitude": -12.817500,                             +
+                 "situacao": "Reconhecido",                          +
+                 "dt_evento": "2024-01-01",                          +
+                 "longitude": -38.518750,                            +
+                 "municipio": "Salvador",                            +
+                 "protocolo": "BA-F-2927408-13213-20240101",         +
+                 "tipologia": "Granizo",                             +
+                 "cd_cobrade": "13213",                              +
+                 "dt_registro": "2024-01-02",                        +
+                 "atualizado_em": "2026-11-09T15:30:38.457444-03:00",+
+                 "grupo_cobrade": "Meteorológico",                   +
+                 "total_pessoas_afetadas": 7                         +
+             }                                                       +
+         },                                                          +
+         {                                                           +
+             "id": "RJ-F-3304557-13215-20240120",                    +
+             "operacao": "GRAVAR",                                   +
+             "registro": {                                           +
+                 "id": "RJ-F-3304557-13215-20240120",                +
+                 "uf": "RJ",                                         +
+                 "danos": {                                          +
+                     "DH_MORTOS": 0.00,                              +
+                     "DH_FERIDOS": 0.00,                             +
+                     "PEPL_TOTAL": 0.00,                             +
+                     "PEPR_TOTAL": 0.00,                             +
+                     "DH_ENFERMOS": 0.00,                            +
+                     "DH_DESALOJADOS": 0.00,                         +
+                     "DH_DESABRIGADOS": 0.00,                        +
+                     "DH_DESAPARECIDOS": 0.00,                       +
+                     "DM_UH_DESTRUIDAS": 0.00,                       +
+                     "DM_UH_DANIFICADAS": 0.00,                      +
+                     "DH_OUTROS_AFETADOS": 0.00                      +
+                 },                                                  +
+                 "cd_mun": "3304557",                                +
+                 "versao": 1,                                        +
+                 "latitude": -22.925000,                             +
+                 "situacao": "Reconhecido",                          +
+                 "dt_evento": "2024-01-20",                          +
+                 "longitude": -43.450000,                            +
+                 "municipio": "Rio de Janeiro",                      +
+                 "protocolo": "RJ-F-3304557-13215-20240120",         +
+                 "tipologia": "Vendaval",                            +
+                 "cd_cobrade": "13215",                              +
+                 "dt_registro": "2024-01-21",                        +
+                 "atualizado_em": "2026-11-09T15:30:38.457444-03:00",+
+                 "grupo_cobrade": "Meteorológico",                   +
+                 "total_pessoas_afetadas": 0                         +
+             }                                                       +
+         }                                                           +
+     ],                                                              +
+     "versao_contrato": "v1"                                         +
+ }
+(1 row)
+

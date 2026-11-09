@@ -1,0 +1,220 @@
+Timing is off.
+BEGIN
+SET
+SET
+SET
+INSERT 0 1
+INSERT 0 1
+INSERT 0 5625
+INSERT 0 200000
+ANALYZE
+ANALYZE
+
+=== C1. Ocorrências de inundação em um período (B-tree composto cd_cobrade, dt_evento) ===
+--- com índice
+                                                               QUERY PLAN                                                               
+----------------------------------------------------------------------------------------------------------------------------------------
+ Aggregate (actual time=0.684..0.685 rows=1 loops=1)
+   Buffers: shared hit=597
+   ->  Bitmap Heap Scan on ocorrencia (actual time=0.106..0.648 rows=721 loops=1)
+         Recheck Cond: ((cd_cobrade = '12100'::bpchar) AND (dt_evento >= '2020-01-01'::date) AND (dt_evento <= '2020-12-31'::date))
+         Heap Blocks: exact=593
+         Buffers: shared hit=597
+         ->  Bitmap Index Scan on ix_ocorrencia_cobrade_data (actual time=0.050..0.050 rows=721 loops=1)
+               Index Cond: ((cd_cobrade = '12100'::bpchar) AND (dt_evento >= '2020-01-01'::date) AND (dt_evento <= '2020-12-31'::date))
+               Buffers: shared hit=4
+ Planning:
+   Buffers: shared hit=71
+ Planning Time: 0.182 ms
+ Execution Time: 0.705 ms
+(13 rows)
+
+SAVEPOINT
+DROP INDEX
+--- sem índice
+                                                          QUERY PLAN                                                          
+------------------------------------------------------------------------------------------------------------------------------
+ Aggregate (actual time=10.864..10.864 rows=1 loops=1)
+   Buffers: shared hit=2667
+   ->  Seq Scan on ocorrencia (actual time=0.030..10.819 rows=721 loops=1)
+         Filter: ((dt_evento >= '2020-01-01'::date) AND (dt_evento <= '2020-12-31'::date) AND (cd_cobrade = '12100'::bpchar))
+         Rows Removed by Filter: 199289
+         Buffers: shared hit=2667
+ Planning:
+   Buffers: shared hit=4
+ Planning Time: 0.052 ms
+ Execution Time: 10.877 ms
+(10 rows)
+
+ROLLBACK
+
+=== C2. Municípios vizinhos de todos os municípios (GiST em geom) ===
+--- com índice
+                                                 QUERY PLAN                                                 
+------------------------------------------------------------------------------------------------------------
+ Aggregate (actual time=175.390..175.391 rows=1 loops=1)
+   Buffers: shared hit=36793
+   ->  Nested Loop (actual time=0.094..174.226 rows=22052 loops=1)
+         Buffers: shared hit=36793
+         ->  Seq Scan on municipio a (actual time=0.004..0.490 rows=5625 loops=1)
+               Filter: (cd_uf = 52)
+               Rows Removed by Filter: 8
+               Buffers: shared hit=149
+         ->  Index Scan using gx_municipio_geom on municipio b (actual time=0.012..0.030 rows=4 loops=5625)
+               Index Cond: (geom && a.geom)
+               Filter: ((cd_uf = 52) AND (a.cd_mun < cd_mun) AND st_touches(a.geom, geom))
+               Rows Removed by Filter: 5
+               Buffers: shared hit=36644
+ Planning:
+   Buffers: shared hit=121
+ Planning Time: 0.812 ms
+ Execution Time: 175.423 ms
+(17 rows)
+
+SAVEPOINT
+DROP INDEX
+--- sem índice
+                                               QUERY PLAN                                                
+---------------------------------------------------------------------------------------------------------
+ Aggregate (actual time=3452.003..3452.005 rows=1 loops=1)
+   Buffers: shared hit=483823
+   ->  Nested Loop (actual time=0.056..3449.916 rows=22052 loops=1)
+         Buffers: shared hit=483823
+         ->  Seq Scan on municipio a (actual time=0.006..1.130 rows=5625 loops=1)
+               Filter: (cd_uf = 52)
+               Rows Removed by Filter: 8
+               Buffers: shared hit=149
+         ->  Index Scan using municipio_pkey on municipio b (actual time=0.016..0.612 rows=4 loops=5625)
+               Index Cond: (cd_mun > a.cd_mun)
+               Filter: ((cd_uf = 52) AND st_touches(a.geom, geom))
+               Rows Removed by Filter: 2809
+               Buffers: shared hit=483674
+ Planning:
+   Buffers: shared hit=9
+ Planning Time: 0.727 ms
+ Execution Time: 3452.028 ms
+(17 rows)
+
+ROLLBACK
+
+=== C3. Municípios a até 50 km de um ponto (GiST em ponto_ref::geography) ===
+--- com índice
+                                                                          QUERY PLAN                                                                          
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Aggregate (actual time=0.145..0.146 rows=1 loops=1)
+   Buffers: shared hit=16
+   ->  Bitmap Heap Scan on municipio (actual time=0.062..0.141 rows=69 loops=1)
+         Filter: st_dwithin((ponto_ref)::geography, '0101000020421200000000000000A049C000000000004030C0'::geography, '50000'::double precision, true)
+         Rows Removed by Filter: 40
+         Heap Blocks: exact=9
+         Buffers: shared hit=16
+         ->  Bitmap Index Scan on gx_municipio_ponto_geog (actual time=0.034..0.035 rows=109 loops=1)
+               Index Cond: ((ponto_ref)::geography && _st_expand('0101000020421200000000000000A049C000000000004030C0'::geography, '50000'::double precision))
+               Buffers: shared hit=7
+ Planning:
+   Buffers: shared hit=45
+ Planning Time: 0.434 ms
+ Execution Time: 0.192 ms
+(14 rows)
+
+SAVEPOINT
+DROP INDEX
+--- sem índice
+                                                                      QUERY PLAN                                                                      
+------------------------------------------------------------------------------------------------------------------------------------------------------
+ Aggregate (actual time=6.160..6.161 rows=1 loops=1)
+   Buffers: shared hit=149
+   ->  Seq Scan on municipio (actual time=2.822..6.155 rows=69 loops=1)
+         Filter: st_dwithin((ponto_ref)::geography, '0101000020421200000000000000A049C000000000004030C0'::geography, '50000'::double precision, true)
+         Rows Removed by Filter: 5564
+         Buffers: shared hit=149
+ Planning:
+   Buffers: shared hit=4
+ Planning Time: 0.045 ms
+ Execution Time: 6.169 ms
+(10 rows)
+
+ROLLBACK
+
+=== C4. Recorrência hidrológica numa região (filtro por grupo COBRADE + caixa espacial) ===
+--- predicado com função na coluna: left(cd_cobrade, 2) = '12' (não usa índice)
+                                                                                                                                    QUERY PLAN                                                                                                                                    
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Limit (actual time=35.728..35.731 rows=10 loops=1)
+   Buffers: shared hit=2685
+   ->  Sort (actual time=35.726..35.729 rows=10 loops=1)
+         Sort Key: (count(*)) DESC
+         Sort Method: top-N heapsort  Memory: 25kB
+         Buffers: shared hit=2685
+         ->  GroupAggregate (actual time=35.504..35.706 rows=144 loops=1)
+               Group Key: m.cd_mun
+               Buffers: shared hit=2685
+               ->  Sort (actual time=35.498..35.565 rows=1922 loops=1)
+                     Sort Key: m.cd_mun
+                     Sort Method: quicksort  Memory: 79kB
+                     Buffers: shared hit=2685
+                     ->  Hash Join (actual time=0.078..35.083 rows=1922 loops=1)
+                           Hash Cond: (o.cd_mun = m.cd_mun)
+                           Buffers: shared hit=2685
+                           ->  Seq Scan on ocorrencia o (actual time=0.006..30.813 rows=75006 loops=1)
+                                 Filter: ("left"((cd_cobrade)::text, 2) = '12'::text)
+                                 Rows Removed by Filter: 125004
+                                 Buffers: shared hit=2667
+                           ->  Hash (actual time=0.059..0.060 rows=144 loops=1)
+                                 Buckets: 1024  Batches: 1  Memory Usage: 14kB
+                                 Buffers: shared hit=18
+                                 ->  Bitmap Heap Scan on municipio m (actual time=0.026..0.044 rows=144 loops=1)
+                                       Recheck Cond: (geom && '01030000204212000001000000050000000000000000804AC000000000000032C00000000000804AC000000000000031C00000000000004AC000000000000031C00000000000004AC000000000000032C00000000000804AC000000000000032C0'::geometry)
+                                       Heap Blocks: exact=13
+                                       Buffers: shared hit=18
+                                       ->  Bitmap Index Scan on gx_municipio_geom (actual time=0.022..0.022 rows=144 loops=1)
+                                             Index Cond: (geom && '01030000204212000001000000050000000000000000804AC000000000000032C00000000000804AC000000000000031C00000000000004AC000000000000031C00000000000004AC000000000000032C00000000000804AC000000000000032C0'::geometry)
+                                             Buffers: shared hit=5
+ Planning:
+   Buffers: shared hit=83
+ Planning Time: 0.310 ms
+ Execution Time: 35.756 ms
+(34 rows)
+
+--- predicado reescrito como faixa: cd_cobrade BETWEEN '12000' AND '12999' (usa o B-tree)
+                                                                                                                                 QUERY PLAN                                                                                                                                 
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Limit (actual time=16.183..16.187 rows=10 loops=1)
+   Buffers: shared hit=2798
+   ->  Sort (actual time=16.182..16.185 rows=10 loops=1)
+         Sort Key: (count(*)) DESC
+         Sort Method: top-N heapsort  Memory: 25kB
+         Buffers: shared hit=2798
+         ->  HashAggregate (actual time=16.152..16.165 rows=144 loops=1)
+               Group Key: m.cd_mun
+               Batches: 1  Memory Usage: 48kB
+               Buffers: shared hit=2798
+               ->  Hash Join (actual time=2.927..15.869 rows=1922 loops=1)
+                     Hash Cond: (o.cd_mun = m.cd_mun)
+                     Buffers: shared hit=2798
+                     ->  Bitmap Heap Scan on ocorrencia o (actual time=2.858..10.933 rows=75006 loops=1)
+                           Recheck Cond: ((cd_cobrade >= '12000'::bpchar) AND (cd_cobrade <= '12999'::bpchar))
+                           Heap Blocks: exact=2667
+                           Buffers: shared hit=2780
+                           ->  Bitmap Index Scan on ix_ocorrencia_cobrade_data (actual time=2.597..2.597 rows=75009 loops=1)
+                                 Index Cond: ((cd_cobrade >= '12000'::bpchar) AND (cd_cobrade <= '12999'::bpchar))
+                                 Buffers: shared hit=113
+                     ->  Hash (actual time=0.060..0.061 rows=144 loops=1)
+                           Buckets: 1024  Batches: 1  Memory Usage: 14kB
+                           Buffers: shared hit=18
+                           ->  Bitmap Heap Scan on municipio m (actual time=0.026..0.045 rows=144 loops=1)
+                                 Recheck Cond: (geom && '01030000204212000001000000050000000000000000804AC000000000000032C00000000000804AC000000000000031C00000000000004AC000000000000031C00000000000004AC000000000000032C00000000000804AC000000000000032C0'::geometry)
+                                 Heap Blocks: exact=13
+                                 Buffers: shared hit=18
+                                 ->  Bitmap Index Scan on gx_municipio_geom (actual time=0.022..0.022 rows=144 loops=1)
+                                       Index Cond: (geom && '01030000204212000001000000050000000000000000804AC000000000000032C00000000000804AC000000000000031C00000000000004AC000000000000031C00000000000004AC000000000000032C00000000000804AC000000000000032C0'::geometry)
+                                       Buffers: shared hit=5
+ Planning:
+   Buffers: shared hit=17
+ Planning Time: 0.237 ms
+ Execution Time: 16.216 ms
+(34 rows)
+
+ROLLBACK
+
+Benchmark concluído. Nenhuma alteração foi mantida (ROLLBACK).

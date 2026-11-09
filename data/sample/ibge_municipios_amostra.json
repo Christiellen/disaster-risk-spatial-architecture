@@ -1,0 +1,74 @@
+[
+ {
+  "municipio-id": 4205407,
+  "municipio-nome": "Florianópolis",
+  "UF-id": 42,
+  "UF-sigla": "SC",
+  "UF-nome": "Santa Catarina",
+  "regiao-sigla": "S"
+ },
+ {
+  "municipio-id": 4216602,
+  "municipio-nome": "São José",
+  "UF-id": 42,
+  "UF-sigla": "SC",
+  "UF-nome": "Santa Catarina",
+  "regiao-sigla": "S"
+ },
+ {
+  "municipio-id": 4211900,
+  "municipio-nome": "Palhoça",
+  "UF-id": 42,
+  "UF-sigla": "SC",
+  "UF-nome": "Santa Catarina",
+  "regiao-sigla": "S"
+ },
+ {
+  "municipio-id": 4314902,
+  "municipio-nome": "Porto Alegre",
+  "UF-id": 43,
+  "UF-sigla": "RS",
+  "UF-nome": "Rio Grande do Sul",
+  "regiao-sigla": "S"
+ },
+ {
+  "municipio-id": 4304606,
+  "municipio-nome": "Canoas",
+  "UF-id": 43,
+  "UF-sigla": "RS",
+  "UF-nome": "Rio Grande do Sul",
+  "regiao-sigla": "S"
+ },
+ {
+  "municipio-id": 5300108,
+  "municipio-nome": "Brasília",
+  "UF-id": 53,
+  "UF-sigla": "DF",
+  "UF-nome": "Distrito Federal",
+  "regiao-sigla": "CO"
+ },
+ {
+  "municipio-id": 3304557,
+  "municipio-nome": "Rio de Janeiro",
+  "UF-id": 33,
+  "UF-sigla": "RJ",
+  "UF-nome": "Rio de Janeiro",
+  "regiao-sigla": "SE"
+ },
+ {
+  "municipio-id": 2927408,
+  "municipio-nome": "Salvador",
+  "UF-id": 29,
+  "UF-sigla": "BA",
+  "UF-nome": "Bahia",
+  "regiao-sigla": "NE"
+ },
+ {
+  "municipio-id": 12345,
+  "municipio-nome": "Registro defeituoso",
+  "UF-id": 12,
+  "UF-sigla": "AC",
+  "UF-nome": "Acre",
+  "regiao-sigla": "N"
+ }
+]

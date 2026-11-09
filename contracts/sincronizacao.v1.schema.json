@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/Christiellen/disaster-risk-spatial-architecture/contracts/sincronizacao.v1.schema.json",
+  "title": "Página de sincronização incremental - contrato v1",
+  "description": "Resposta de api.fn_v1_sincronizar(cursor, limite). O cliente aplica as alterações na ordem, guarda 'cursor' e repete enquanto 'tem_mais' for verdadeiro.",
+  "type": "object",
+  "required": ["versao_contrato", "cursor", "tem_mais", "alteracoes"],
+  "properties": {
+    "versao_contrato": {"const": "v1"},
+    "cursor":   {"type": "integer", "minimum": 0},
+    "tem_mais": {"type": "boolean"},
+    "alteracoes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["operacao", "id"],
+        "properties": {
+          "operacao": {"enum": ["GRAVAR", "EXCLUIR"]},
+          "id":       {"type": "string"},
+          "registro": {"oneOf": [{"$ref": "ocorrencia.v1.schema.json"}, {"type": "null"}]}
+        },
+        "allOf": [
+          {"if": {"properties": {"operacao": {"const": "GRAVAR"}}},
+           "then": {"properties": {"registro": {"$ref": "ocorrencia.v1.schema.json"}}, "required": ["registro"]}},
+          {"if": {"properties": {"operacao": {"const": "EXCLUIR"}}},
+           "then": {"properties": {"registro": {"type": "null"}}}}
+        ]
+      }
+    }
+  }
+}

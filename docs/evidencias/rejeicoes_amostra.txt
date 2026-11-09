@@ -1,0 +1,17 @@
+            regra             | linhas 
+------------------------------+--------
+ G03_GRAU_RISCO_DESCONHECIDO  |      1
+ R01_MUN_AUSENTE              |      2
+ R02_MUN_INEXISTENTE          |      2
+ R03_UF_DIVERGENTE            |      2
+ R04_COBRADE_INEXISTENTE      |      2
+ R05_COBRADE_NAO_FOLHA        |      2
+ R06_DATA_EVENTO_INVALIDA     |      2
+ R07_DATA_EVENTO_FUTURA       |      2
+ R08_REGISTRO_ANTES_DO_EVENTO |      2
+ R10_DANO_INVALIDO            |      4
+ R11_DUPLICADO_NO_LOTE        |      2
+ T01_MUN_CODIGO_INVALIDO      |      1
+ T11_MALHA_SEM_CADASTRO       |      1
+(13 rows)
+

@@ -1,0 +1,37 @@
+# Mapeamento das colunas do arquivo do Atlas Digital de Desastres para
+# os nomes canônicos do staging.
+#
+# Os nomes do arquivo são normalizados antes da comparação: minúsculas,
+# sem acentos, e qualquer sequência que não seja letra ou dígito vira "_".
+#   "Cód. IBGE Município" -> "cod_ibge_municipio"
+#
+# Rode primeiro:  python -m etl.carregar_atlas --arquivo <arquivo> --perfil
+# O perfil lista as colunas sem mapeamento. Se alguma delas for um dos
+# campos abaixo, acrescente o nome normalizado na lista correspondente.
+# Colunas não mapeadas NÃO são descartadas: vão para staging.extras.
+
+campos:
+  protocolo:    [protocolo, protocolo_s2id, nr_protocolo, numero_protocolo]
+  uf:           [uf, sigla_uf, estado]
+  cd_mun:       [cod_ibge_mun, cod_ibge, codigo_ibge, cd_mun, ibge, cod_municipio, codigo_municipio, cod_ibge_municipio, cd_ibge]
+  nome_mun:     [nome_municipio, municipio, nome_mun, nm_municipio]
+  dt_evento:    [data_evento, dt_evento, data_ocorrencia, data_do_evento, data]
+  dt_registro:  [data_registro, dt_registro, data_do_registro]
+  cobrade:      [cod_cobrade, cobrade, codigo_cobrade, cd_cobrade]
+  cobrade_desc: [descricao_tipologia, tipologia, desastre, descricao_cobrade, evento]
+  situacao:     [status, situacao, situacao_registro]
+
+# Indicadores de dano: código do catálogo core.indicador_dano -> nomes aceitos.
+danos:
+  DH_MORTOS:          [dh_mortos, mortos, obitos, dh_obitos]
+  DH_FERIDOS:         [dh_feridos, feridos]
+  DH_ENFERMOS:        [dh_enfermos, enfermos]
+  DH_DESABRIGADOS:    [dh_desabrigados, desabrigados]
+  DH_DESALOJADOS:     [dh_desalojados, desalojados]
+  DH_DESAPARECIDOS:   [dh_desaparecidos, desaparecidos]
+  DH_OUTROS_AFETADOS: [dh_outros_afetados, outros_afetados]
+  DM_UH_DANIFICADAS:  [dm_uni_habita_danificadas, dm_uh_danificadas, unidades_habitacionais_danificadas]
+  DM_UH_DESTRUIDAS:   [dm_uni_habita_destruidas, dm_uh_destruidas, unidades_habitacionais_destruidas]
+  DM_VALOR_TOTAL:     [dm_total_danos_materiais, dm_valor_total]
+  PEPL_TOTAL:         [pepl_total_publico, pepl_total, prejuizo_publico_total]
+  PEPR_TOTAL:         [pepr_total_privado, pepr_total, prejuizo_privado_total]

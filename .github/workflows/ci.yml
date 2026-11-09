@@ -1,0 +1,52 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  banco:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgis/postgis:16-3.4
+        env:
+          POSTGRES_PASSWORD: ci
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U postgres" --health-interval 5s --health-timeout 5s --health-retries 20
+    env:
+      PGHOST: localhost
+      PGPORT: 5432
+      PGUSER: postgres
+      PGPASSWORD: ci
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Dependências
+        run: |
+          sudo apt-get update -qq && sudo apt-get install -y -qq postgresql-client
+          pip install -r requirements.txt
+
+      - name: Migrações, carga da amostra e testes
+        run: ./scripts/rodar_testes.sh
+
+      - name: Dicionário de dados em dia com o banco
+        env:
+          PGDATABASE: s2id_teste
+        run: |
+          python -m etl.gerar_dicionario
+          git diff --exit-code docs/05-dicionario-de-dados.md || {
+            echo "::error::Dicionário desatualizado. Rode 'make dicionario' e faça commit."; exit 1; }
+
+      - name: Migrações com Flyway (mesmo caminho usado no docker compose)
+        run: |
+          psql -d postgres -c "CREATE DATABASE s2id_flyway"
+          docker run --rm --network host -v "$PWD/db/migrations:/flyway/sql:ro" flyway/flyway:10 \
+            -url=jdbc:postgresql://localhost:5432/s2id_flyway -user=postgres -password=ci \
+            -validateMigrationNaming=true migrate
